@@ -8,15 +8,15 @@
 #' @param ... Additional arguments passed on to pairwise.prop.test and prop.test
 #'
 #' @return A tibble with output from pairwise.prop.test
-#' @importFrom rlang enquo
-#' @importFrom rlang :=
-#' @importFrom rlang quo_name
+#' @import rlang
 #' @importFrom forcats fct_drop
 #' @importFrom forcats fct_other
+#' @importFrom forcats fct_inorder
 #' @importFrom dplyr pull
 #' @importFrom dplyr mutate
 #' @importFrom dplyr arrange
-#' @importFrom purrr map_dfr
+#' @importFrom purrr map
+#' @importFrom purrr list_rbind
 #' @export
 #'
 #' @examples
@@ -32,6 +32,12 @@ pairwise_prop_test <- function(df, outcome, subgroups, vs_rest = FALSE, ...) {
   subgroups <- enquo(subgroups)
   subgroups_name <- quo_name(subgroups)
 
+  if (!is.factor(df[[as_name(subgroups)]])) {
+    df[[as_name(subgroups)]] <- df[[as_name(subgroups)]] |>
+      as.character() |>
+      fct_inorder()
+  }
+
   df <- mutate(df, !! subgroups := fct_drop(!! subgroups))
 
   levels_check <- df |>
@@ -43,12 +49,21 @@ pairwise_prop_test <- function(df, outcome, subgroups, vs_rest = FALSE, ...) {
   }
 
   if (vs_rest) {
-    df |>
+    levs <- df |>
       pull(!! subgroups) |>
-      levels() |>
-      map_dfr(function(x) df |>
-                mutate(!! subgroups_name := fct_other(!! subgroups, keep = x)) |>
+      levels()
+
+    if ("Other" %in% levs) {
+      other_lev <- "Other2"
+    } else {
+      other_lev <- "Other"
+    }
+
+    levs |>
+      map(function(x) df |>
+                mutate(!! subgroups_name := fct_other(!! subgroups, keep = x, other_level = other_lev)) |>
                 pairwise_prop_test_int(!! outcome, !! subgroups)) |>
+      list_rbind() |>
       arrange(!! outcome)
   } else {
     pairwise_prop_test_int(df, !! outcome, !! subgroups)

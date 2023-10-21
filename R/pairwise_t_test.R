@@ -16,7 +16,9 @@
 #' @importFrom dplyr mutate
 #' @importFrom forcats fct_other
 #' @importFrom forcats fct_drop
-#' @importFrom purrr map_dfr
+#' @importFrom forcats fct_inorder
+#' @importFrom purrr map
+#' @importFrom purrr list_rbind
 #' @export
 #'
 #' @examples
@@ -26,6 +28,12 @@ pairwise_t_test <- function(df, outcome, subgroups, vs_rest = FALSE, ...) {
   outcome <- enquo(outcome)
   subgroups <- enquo(subgroups)
   subgroups_name <- quo_name(subgroups)
+
+  if (!is.factor(df[[as_name(subgroups)]])) {
+    df[[as_name(subgroups)]] <- df[[as_name(subgroups)]] |>
+      as.character() |>
+      fct_inorder()
+  }
 
   df <- mutate(df, !! subgroups := fct_drop(!! subgroups))
 
@@ -41,9 +49,10 @@ pairwise_t_test <- function(df, outcome, subgroups, vs_rest = FALSE, ...) {
     df |>
       pull(!! subgroups) |>
       levels() |>
-      map_dfr(function(x) df |>
+      map(function(x) df |>
                 mutate(!! subgroups_name := fct_other(!! subgroups, keep = x)) |>
-                pairwise_t_test_int(!! outcome, !! subgroups))
+                pairwise_t_test_int(!! outcome, !! subgroups)) |>
+      list_rbind()
   } else {
     pairwise_t_test_int(df, !! outcome, !! subgroups)
   }
