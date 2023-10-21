@@ -17,6 +17,7 @@ geom_sigmark(colour_fill = NULL, colours, ...)
 A ggplot2 layer that can be added to a plot created with \code{ggplot2::ggplot()}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 A wrapper for \code{ggtext::geom_richtext()} designed to pass labels and their significance markers
 }
 \note{
@@ -34,38 +35,36 @@ mydf <- data.frame(smokers = c(rbinom(100, 1, .8),
 colour_vec <- c("red", "blue", "green", "orange")
 names(colour_vec) <- LETTERS[1:4]
 
-summ_df <- mydf \%>\%
-  count(smokers, region) \%>\%
-  filter(smokers == 1) \%>\%
+summ_df <- mydf |>
+  count(smokers, region) |>
+  filter(smokers == 1) |>
   mutate(perc = n / sum(n))
 
 # Comparing subgroup to subgroup
 
-test_res <- mydf \%>\%
-  pairwise_prop_test(smokers, region) \%>\%
-  filter(p_value < 0.05, smokers == 1) \%>\%
+test_res <- mydf |>
+  pairwise_prop_test(smokers, region) |>
+  filter(p_value < 0.05, smokers == 1) |>
   select(higher_group, lower_group)
 
-summ_df \%>\%
-  prep_sigmark(test_res, region, perc, colour_vec, percent = TRUE, vs_rest = FALSE) \%>\%
-  ggplot(aes(x = region, y = perc, label = labels, fill = region)) +
+summ_df |>
+  prep_sigmark(test_res, region, perc, colour_vec, percent = TRUE, vs_rest = FALSE) |>
+  ggplot(aes(x = perc, y = region, label = labels, fill = region)) +
   geom_col() +
-  coord_flip() +
   geom_sigmark("fill", colour_vec, hjust = 0) +
-  ylim(c(0, 1))
+  xlim(c(0, 1))
 
 # Comparing each subgroup to rest of sample
 
-test_res2 <- mydf \%>\%
-  pairwise_prop_test(smokers, region, vs_rest = TRUE) \%>\%
-  filter(p_value < 0.05, smokers == 1) \%>\%
+test_res2 <- mydf |>
+  pairwise_prop_test(smokers, region, vs_rest = TRUE) |>
+  filter(p_value < 0.05, smokers == 1) |>
   select(higher_group, lower_group)
 
-summ_df \%>\%
-  prep_sigmark(test_res2, region, perc, colour_vec, percent = TRUE, vs_rest = TRUE) \%>\%
-  ggplot(aes(x = region, y = perc, label = labels, fill = region)) +
+summ_df |>
+  prep_sigmark(test_res2, region, perc, colour_vec, percent = TRUE, vs_rest = TRUE) |>
+  ggplot(aes(x = perc, y = region, label = labels, fill = region)) +
   geom_col() +
-  coord_flip() +
   geom_sigmark(hjust = 0) +
-  ylim(c(0, 1))
+  xlim(c(0, 1))
 }

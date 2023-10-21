@@ -25,6 +25,7 @@ prep_sigmark(df, test_df, subgroups, result, colours = NULL, percent, vs_rest)
 A tibble ready for ggplot2 chart with a \code{geom_sigmark()} layer.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 Helper function to prepare a summarized data frame for significance markers with geom_sigmark
 }
 \examples{
@@ -34,8 +35,7 @@ mydf <- data.frame(smokers = c(rbinom(100, 1, .8),
                    region = c(rep("A", 100), rep("B", 70), rep("C", 50)))
 test_res <- pairwise_prop_test(mydf, smokers, region)
 
-colour_vec <- c("red", "blue", "green", "orange")
-names(colour_vec) <- LETTERS[1:4]
+colour_vec <- c("A" = "red", "B" = "blue", "C" = "green")
 
 library(dplyr, warn.conflicts = FALSE)
 mydf |>

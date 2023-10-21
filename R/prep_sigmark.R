@@ -1,6 +1,8 @@
 #' Prepare for geom_sigmark
 #'
-#' @description Helper function to prepare a summarized data frame for significance markers with geom_sigmark
+#' @description
+#' `r lifecycle::badge("stable")`
+#' Helper function to prepare a summarized data frame for significance markers with geom_sigmark
 #' @param df A data frame with the summarized data to be charted
 #' @param test_df The output of either `pairwise_t_test` or `pairwise_prop_test`. Note that you need to filter out that output to only include those comparisons to be shown as significant.
 #' @param subgroups Grouping vector

@@ -1,6 +1,8 @@
 #' Significance marker labels
 #'
-#' @description A wrapper for `ggtext::geom_richtext()` designed to pass labels and their significance markers
+#' @description
+#' `r lifecycle::badge("stable")`
+#' A wrapper for `ggtext::geom_richtext()` designed to pass labels and their significance markers
 #' @param colour_fill Either "colour" or "fill", depending on the geometric object used
 #' @param colours A vector of colours to be passed into `scale_*_manual()`
 #' @param ... Arguments to pass into `ggtext::geom_richtext()`
@@ -42,7 +44,7 @@
 #'   ggplot(aes(x = perc, y = region, label = labels, fill = region)) +
 #'   geom_col() +
 #'   geom_sigmark("fill", colour_vec, hjust = 0) +
-#'   ylim(c(0, 1))
+#'   xlim(c(0, 1))
 #'
 #' # Comparing each subgroup to rest of sample
 #'
@@ -56,7 +58,7 @@
 #'   ggplot(aes(x = perc, y = region, label = labels, fill = region)) +
 #'   geom_col() +
 #'   geom_sigmark(hjust = 0) +
-#'   ylim(c(0, 1))
+#'   xlim(c(0, 1))
 
 geom_sigmark <- function(colour_fill = NULL, colours, ...) {
   if (missing(colour_fill)) {

@@ -1,6 +1,8 @@
 #' Pairwise T Tests
 #'
-#' @description A tidy calculation of pairwise comparisons between group levels with corrections for multiple testing
+#' @description
+#' `r lifecycle::badge("stable")`
+#' A tidy calculation of pairwise comparisons between group levels with corrections for multiple testing
 #' @param df A data frame or tibble of raw observations
 #' @param outcome Response vector
 #' @param subgroups Grouping vector

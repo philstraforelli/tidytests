@@ -21,6 +21,7 @@ pairwise_t_test(df, outcome, subgroups, vs_rest = FALSE, ...)
 A tibble with output from pairwise.t.test
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 A tidy calculation of pairwise comparisons between group levels with corrections for multiple testing
 }
 \examples{
