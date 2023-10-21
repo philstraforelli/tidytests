@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 # tidytests
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://www.tidyverse.org/lifecycle/#stable)
 <!-- badges: end -->
 
 The goal of tidytests is to provide a tidy implementation of the output from t-tests and proportional tests.
